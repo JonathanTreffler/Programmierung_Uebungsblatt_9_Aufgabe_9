@@ -1,15 +1,10 @@
-# Programmierung Übungsblatt x Aufgabe x
+# Programmierung Übungsblatt 9 Aufgabe 9
 
 
 ## Usage
 Run and Compile:
 ```bash
 make
-```
-
-Generate Javadocs:
-```bash
-make doc
 ```
 
 ## Gitpod
