@@ -72,6 +72,17 @@ istInListe _ [] = False
 istInListe el (x:xs) = (el == x) || istInListe el xs
 
 
+-- e)
+
+
+existsPath :: [(Int,Int)] -> Int -> Int -> Bool
+existsPath [] _ _ = False
+existsPath ((e1,e2):es) a b
+  | a == b = True
+  | a == e1 && existsPath es a e2 = existsPath es e2 b || existsPath es a b
+  | otherwise = existsPath es a b
+
+
 -- test
 
 getElement :: Int -> [Int] -> Int
@@ -89,4 +100,4 @@ main = do
     -- print (lengthOfList [1,2,3])
     -- print (powerlist [1,2,3])
     -- print(permutations [1,2,3])
-    print(nodes  [(1,2),(2,3),(3,1),(4,5),(3,4)])
+    print(existsPath  [(1,2),(2,3),(3,1),(4,5),(3,4)] 1 5)
