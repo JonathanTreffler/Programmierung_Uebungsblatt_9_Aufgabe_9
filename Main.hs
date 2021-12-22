@@ -62,21 +62,21 @@ nodes arr = nodesHelper arr []
 
 nodesHelper :: [(Int,Int)] -> [Int] -> [Int]
 nodesHelper [] _ = []
-nodesHelper ((e1,e2):es) bisherige = nodesHelper2 e1 bisherige ++ nodesHelper2 e2 (e1 : bisherige) ++ nodesHelper es (e1 : e2 : bisherige) 
+nodesHelper ((e1,e2):es) bisherige = nodesHelper2 e1 bisherige ++ nodesHelper2 e2 (e1 : bisherige) ++ nodesHelper es (e1 : e2 : bisherige)
 
 nodesHelper2 :: Int -> [Int] -> [Int]
 nodesHelper2 e arr = if (istInListe e arr) then [] else [e]
 
 istInListe :: Int -> [Int] -> Bool
 istInListe _ [] = False
-istInListe el (x:xs) = if el == x then True else istInListe el xs
+istInListe el (x:xs) = (el == x) || istInListe el xs
 
 
 -- test
 
 getElement :: Int -> [Int] -> Int
 getElement _ [] = 0
-getElement 0 (x:xs) = x 
+getElement 0 (x:xs) = x
 getElement index (x:xs) = getElement (index-1) xs
 
 lengthOfList :: [Int] -> Int
