@@ -1,0 +1,20 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: Programmierung-Nils-Jonathan/Abgabe-Action@v1
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Abgabe
+          tag_name: abgabe
+          files: Abgabe.zip

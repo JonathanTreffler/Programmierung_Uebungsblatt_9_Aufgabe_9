@@ -1,0 +1,22 @@
+name: Compile and Run Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, windows-2022]
+    steps:
+      - uses: actions/checkout@v2
+      
+      - uses: haskell/actions/setup@v1
+
+      - name: Compile and Run
+        run: make

@@ -1,0 +1,20 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+  - name: Aufgabe X
+    command: make
+
+vscode:
+  extensions:
+    - haskell.haskell
+
+github:
+  prebuilds:
+    master: true
+    branches: true
+    pullRequests: true
+    pullRequestsFromForks: false
+    addCheck: true
+    addComment: true
+    addBadge: false
