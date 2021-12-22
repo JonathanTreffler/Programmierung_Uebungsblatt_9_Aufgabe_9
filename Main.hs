@@ -53,6 +53,25 @@ funktionaufListeAnwenden f (x:xs) = f x (funktionaufListeAnwenden f xs)
 --permutate [] _ = []
 --permutate (x:xs) ys = [((x:xs) ++ ys)] ++ permutate xs (ys ++ [x])
 
+
+-- d)
+
+nodes :: [(Int,Int)] -> [Int]
+nodes [] = []
+nodes arr = nodesHelper arr []
+
+nodesHelper :: [(Int,Int)] -> [Int] -> [Int]
+nodesHelper [] _ = []
+nodesHelper ((e1,e2):es) bisherige = nodesHelper2 e1 bisherige ++ nodesHelper2 e2 (e1 : bisherige) ++ nodesHelper es (e1 : e2 : bisherige) 
+
+nodesHelper2 :: Int -> [Int] -> [Int]
+nodesHelper2 e arr = if (istInListe e arr) then [] else [e]
+
+istInListe :: Int -> [Int] -> Bool
+istInListe _ [] = False
+istInListe el (x:xs) = if el == x then True else istInListe el xs
+
+
 -- test
 
 getElement :: Int -> [Int] -> Int
@@ -69,4 +88,5 @@ main = do
     -- print (getElement 8 [1,2,4,5])
     -- print (lengthOfList [1,2,3])
     -- print (powerlist [1,2,3])
-    print(permutations [1,2,3])
+    -- print(permutations [1,2,3])
+    print(nodes  [(1,2),(2,3),(3,1),(4,5),(3,4)])
