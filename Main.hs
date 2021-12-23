@@ -65,7 +65,7 @@ nodesHelper [] _ = []
 nodesHelper ((e1,e2):es) bisherige = nodesHelper2 e1 bisherige ++ nodesHelper2 e2 (e1 : bisherige) ++ nodesHelper es (e1 : e2 : bisherige)
 
 nodesHelper2 :: Int -> [Int] -> [Int]
-nodesHelper2 e arr = if (istInListe e arr) then [] else [e]
+nodesHelper2 e arr = [e | not (istInListe e arr)]
 
 istInListe :: Int -> [Int] -> Bool
 istInListe _ [] = False
@@ -74,30 +74,50 @@ istInListe el (x:xs) = (el == x) || istInListe el xs
 
 -- e)
 
-
 existsPath :: [(Int,Int)] -> Int -> Int -> Bool
 existsPath [] _ _ = False
-existsPath ((e1,e2):es) a b
-  | a == b = True
-  | a == e1 && existsPath es a e2 = existsPath es e2 b || existsPath es a b
-  | otherwise = existsPath es a b
+existsPath es el1 el2 = (el1 == el2) || elementInList (nodeNeighbours es el1) el2 || existsPathFromList (removeNodeFromGraph es el1) (nodeNeighbours es el1) el2
 
+-- Recursively check if a path exists from a list of nodes (t:rest) to a node el
+existsPathFromList :: [(Int,Int)] -> [Int] -> Int -> Bool
+existsPathFromList _ [] _ = False
+existsPathFromList [] _ _ = False
+existsPathFromList graph (t:rest) el = existsPath graph t el || existsPathFromList graph rest el
 
--- test
+-- Get all nodes than can be reached with one step from the Element el
+nodeNeighbours :: [(Int, Int)] -> Int -> [Int]
+nodeNeighbours [] _ = []
+nodeNeighbours ((e1,e2):es) el = if e1 == el then e2 : nodeNeighbours es el else nodeNeighbours es el
 
-getElement :: Int -> [Int] -> Int
-getElement _ [] = 0
-getElement 0 (x:xs) = x
-getElement index (x:xs) = getElement (index-1) xs
+-- Check if Element el is in Tupel (e1,e2) 
+elementInTupel :: (Int,Int) -> Int -> Bool
+elementInTupel (e1,e2) el = (el==e1) || (el==e2)
 
-lengthOfList :: [Int] -> Int
-lengthOfList [] = 0
-lengthOfList (x:xs) = 1 + lengthOfList xs
+-- Recursively check if Element el is in List (e:es)
+elementInList :: [Int] -> Int -> Bool
+elementInList [] _ = False
+elementInList (e:es) el = (e == el) || elementInList es el
+
+-- Recursively remove all references to Element rem e.g remove it from the Graph (el:rest)
+removeNodeFromGraph :: [(Int,Int)] -> Int -> [(Int,Int)]
+removeNodeFromGraph [] _ = []
+removeNodeFromGraph (el:rest) rem = if elementInTupel el rem then removeNodeFromGraph rest rem else el : removeNodeFromGraph rest rem
+
 
 main = do
     -- print (symmetricDifference [1,2,3,4,5,8] [1,3,4,5,6,7,8,9])
-    -- print (getElement 8 [1,2,4,5])
-    -- print (lengthOfList [1,2,3])
     -- print (powerlist [1,2,3])
     -- print(permutations [1,2,3])
+
+    print("existsPath  [(1,2),(2,3),(3,1),(4,5),(3,4)] 1 3 (Expected True)")
+    print(existsPath  [(1,2),(2,3),(3,1),(4,5),(3,4)] 1 3)
+    print("existsPath  [(1,2),(2,3),(3,1),(4,5),(3,4)] 1 5 (Expected True)")
     print(existsPath  [(1,2),(2,3),(3,1),(4,5),(3,4)] 1 5)
+    print("existsPath  [(1,2),(2,3),(3,1),(4,5),(3,4)] 5 5 (Expected True)")
+    print(existsPath  [(1,2),(2,3),(3,1),(4,5),(3,4)] 5 5)
+    print("existsPath  [(1,2),(2,3),(3,1),(4,5),(3,4)] 5 1 (Expected False)")
+    print(existsPath  [(1,2),(2,3),(3,1),(4,5),(3,4)] 5 1)
+    print("existsPath  [(1,2),(2,3),(3,1),(4,5),(3,4)] 5 4 (Expected False)")
+    print(existsPath  [(1,2),(2,3),(3,1),(4,5),(3,4)] 5 4)
+    print("existsPath  [(1,2),(2,3),(3,1),(4,5),(3,4)] 4 3 (Expected False)")
+    print(existsPath  [(1,2),(2,3),(3,1),(4,5),(3,4)] 4 3)
