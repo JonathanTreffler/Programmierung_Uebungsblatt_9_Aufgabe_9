@@ -110,7 +110,7 @@ removeNodeFromGraph (el:rest) rem = if elementInTupel el rem then removeNodeFrom
 -- f)
 
 
--- CHeck if graph es is connected
+-- Check if graph es is connected
 isConnected :: [(Int,Int)] -> Bool
 isConnected [] = True
 isConnected es = graphHasPaths es (nodes es) (nodes es)
